@@ -6,8 +6,8 @@ before_script:
 script:
 - "npm install"
 - "gulp lint"
-- "if [[ $TRAVIS_BRANCH = master ]]; then gulp commit; fi"
-- "if [[ $TRAVIS_BRANCH = stable ]]; then gulp commit; fi"
+- "if [[ "$TRAVIS_BRANCH-$TRAVIS_PULL_REQUEST" = "master-false" ]]; then gulp commit; fi"
+- "if [[ "$TRAVIS_BRANCH-$TRAVIS_PULL_REQUEST" = "stable-false" ]]; then gulp commit; fi"
 before_install:
 - "if [[ $TRAVIS_PULL_REQUEST = false ]]; then openssl aes-256-cbc -K $encrypted_0edb3429ae38_key -iv $encrypted_0edb3429ae38_iv
   -in credentials.json.enc -out credentials.json -d; fi"
