@@ -15,7 +15,7 @@ gulp.task('commit', () =>
     gulp.src('src/main.js')
         .pipe(webpack({ output: { filename: "main.js" } }))
         .pipe(insert.prepend("module.exports = ")) // This line makes webpack's boilerplate be compatible with Screeps.
-        .pipe(gulpScreeps(credentials)));
+        .pipe(gulpScreeps(Object.assign({}, credentials, {branch: process.env['TRAVIS_BRANCH']}))));
 
 gulp.task('lint', () =>
     gulp.src(paths.src)
