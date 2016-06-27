@@ -6,11 +6,8 @@ before_script:
 script:
 - npm install
 - gulp lint
-deploy:
-  provider: script
-  script: "scripts/deploy.sh"
-  on:
-    branch: stable
+- [[ "$TRAVIS_BRANCH" = "master" ]] && gulp commit-test
+- [[ "$TRAVIS_BRANCH" = "stable" ]] && gulp commit-prod
 before_install:
 - openssl aes-256-cbc -K $encrypted_0edb3429ae38_key -iv $encrypted_0edb3429ae38_iv
   -in credentials.json.enc -out credentials.json -d

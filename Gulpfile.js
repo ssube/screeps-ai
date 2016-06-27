@@ -2,20 +2,23 @@ const gulp = require('gulp');
 const webpack = require('webpack-stream');
 const gulpScreeps = require('gulp-screeps');
 const insert = require('gulp-insert');
-const credentials = require('./credentials.json');
 const eslint = require('gulp-eslint');
 
 const paths = {
     src: 'src/**/*.js'
 };
 
-gulp.task('default', ['lint', 'commit']);
-
-gulp.task('commit', () =>
-    gulp.src('src/main.js')
+const commitTask = (credentialFile) => {
+    return gulp.src('src/main.js')
         .pipe(webpack({ output: { filename: "main.js" } }))
-        .pipe(insert.prepend("module.exports = ")) // This line makes webpack's boilerplate be compatible with Screeps.
-        .pipe(gulpScreeps(credentials)));
+        .pipe(insert.prepend("module.exports = "))
+        .pipe(require(credentialFile)));
+};
+
+gulp.task('default', ['lint', 'commit-test']);
+
+gulp.task('commit-test', () => commitTask('./credentials-test.json'));
+gulp.task('commit-prod', () => commitTask('./credentials.json'));
 
 gulp.task('lint', () =>
     gulp.src(paths.src)
